@@ -1,0 +1,3 @@
+name = "random-anime-wallpaper"
+main = "src/index.js"
+compatibility_date = "2025-07-05"
