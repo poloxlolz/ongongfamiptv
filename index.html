@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head><title>Random Anime Wallpaper URL</title></head>
+  <body>
+    <script>
+      // List of wallpaper URLs (you can add more!)
+      const wallpapers = [
+        "https://w.wallhaven.cc/full/po/wallhaven-po2vg3.jpg",
+        "https://w.wallhaven.cc/full/je/wallhaven-je82zp.jpg",
+      ];
+      // Pick one randomly
+      const randomUrl = wallpapers[Math.floor(Math.random() * wallpapers.length)];
+      // Clear page and write URL as plain text
+      document.body.innerText = randomUrl;
+    </script>
+  </body>
+</html>
