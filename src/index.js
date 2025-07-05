@@ -11,6 +11,12 @@ export default {
       return new Response("No images found", { status: 404 });
     }
 
-    return Response.redirect(json.data[0].path, 302);
+
+    const results = json.data;
+    const randomIndex = Math.floor(Math.random() * results.length);
+    const redirectUrl = results[randomIndex].path;
+
+
+    return Response.redirect(redirectUrl, 302);
   }
 };
