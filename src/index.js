@@ -23,9 +23,18 @@ export default {
     const randomIndex = Math.floor(Math.random() * results.length);
     const redirectUrl = results[randomIndex].path;
 
-    const redirectResponse = Response.redirect(redirectUrl, 302);
     // Cache it for x duration
-    redirectResponse.headers.set("Cache-Control", "public, max-age=10");
+    const redirectResponse = new Response(null, {
+      status: 302,
+      headers: {
+        "Location": redirectUrl,
+        "Cache-Control": "public, max-age=10"
+      }
+    });
+
+    
+    // const redirectResponse = Response.redirect(redirectUrl, 302);
+    // redirectResponse.headers.set("Cache-Control", "public, max-age=10");
 
     ctx.waitUntil(cache.put(request, redirectResponse.clone()));
 
