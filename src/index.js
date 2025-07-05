@@ -1,6 +1,13 @@
 export default {
-  async fetch(request) {
+  async fetch(request, ctx) {
+    const cache = caches.default;
 
+    // Check cache first
+    let cachedResponse = await cache.match(request);
+    if (cachedResponse) return cachedResponse;
+
+
+    // No cache: fetch from Wallhaven
     const response = await fetch("https://wallhaven.cc/api/v1/search?q=landscape&categories=010&purity=100&atleast=1920x1080&ratios=16x9&sorting=random");
     if (!response.ok) {
       return new Response("Failed to fetch from Wallhaven", { status: 500 });
@@ -16,7 +23,16 @@ export default {
     const randomIndex = Math.floor(Math.random() * results.length);
     const redirectUrl = results[randomIndex].path;
 
+    const redirectResponse = Response.redirect(redirectUrl, 302);
+    // Cache it for x duration
+    redirectResponse.headers.set("Cache-Control", "public, max-age=10");
 
-    return Response.redirect(redirectUrl, 302);
+    ctx.waitUntil(cache.put(request, redirectResponse.clone()));
+
+    // Cache the response asynchronously
+    return redirectResponse;
+
+
+
   }
 };
